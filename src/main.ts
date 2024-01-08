@@ -4,11 +4,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from "@nestjs/common";
 
 (async () => {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-  const Port = configService.get('port');
-  await app.listen(Port);
-  console.log(`Application is running on: localhost:${Port}`);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true, 
+      }
+    })
+  );
+  await app.listen(3000);
 })();
