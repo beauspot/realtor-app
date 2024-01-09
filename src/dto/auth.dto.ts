@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
+import { UserType } from '@prisma/client';
 import {
   IsString,
   IsNotEmpty,
   IsEmail,
   MinLength,
   Matches,
+  IsEnum,
 } from 'class-validator';
 
 export class SignUpDTO {
@@ -26,4 +28,22 @@ export class SignUpDTO {
   @IsString()
   @MinLength(6)
   password: string;
+}
+
+export class SignInDTO {
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  password: string;
+}
+
+export class GenerateProductKeyDTO {
+  @IsEmail()
+  @IsString()
+  email: string;
+
+  @IsEnum(UserType)
+  userType: UserType;
 }
