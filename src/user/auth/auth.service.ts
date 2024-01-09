@@ -12,7 +12,10 @@ import * as jwt from 'jsonwebtoken';
 export class AuthService {
   constructor(private readonly prismaService: PrismaService) {}
   // Signup Service for signing up user
-  async signup({ email, password, name, phone_no }: SignUpParams) {
+  async signup(
+    { email, password, name, phone_no }: SignUpParams,
+    userType: UserType,
+  ) {
     // checking for the existence of the user via unique email
     const userExists = await this.prismaService.user.findUnique({
       where: {
@@ -33,7 +36,7 @@ export class AuthService {
         name,
         phone_no,
         password: hashedPassword,
-        user_type: UserType.BUYER,
+        user_type: userType,
       },
     });
     const token = this.generateJWT(newUser.email, newUser.id);
@@ -60,7 +63,7 @@ export class AuthService {
     return { user: { userEmail: email }, tokenData: token };
   }
 
-  generate_product_key(email: string, userType: UserType){
+  generate_product_key(email: string, userType: UserType) {
     const userStringToken = `${email}-${userType}-${process.env.PRODUCT_KEY_SECRET}`;
 
     return bcrypt.hash(userStringToken, 10);
