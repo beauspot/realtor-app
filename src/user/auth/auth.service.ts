@@ -3,7 +3,7 @@
 
 import { Injectable, ConflictException, HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SignUpParams, SignInParams } from 'src/interface/signupparams';
+import { SignUpParams, SignInParams } from 'src/interface/authparams';
 import * as bcrypt from 'bcryptjs';
 import { UserType } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
