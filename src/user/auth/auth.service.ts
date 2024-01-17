@@ -16,53 +16,68 @@ export class AuthService {
     { email, password, name, phone }: SignUpParams,
     userType: UserType,
   ) {
-    // checking for the existence of the user via unique email
-    const userExists = await this.prismaService.user.findUnique({
-      where: {
-        email,
-      },
-    });
-    if (userExists) {
-      throw new ConflictException();
+    try {
+      // checking for the existence of the user via unique email
+      const userExists = await this.prismaService.user.findUnique({
+        where: {
+          email,
+        },
+      });
+      if (userExists) {
+        throw new ConflictException();
+      }
+
+      // Hashing the passwords
+      const hashedPassword = await bcrypt.hash(password, 10);
+      // console.log({ hashedPassword });
+
+      const newUser = await this.prismaService.user.create({
+        data: {
+          email,
+          name,
+          phone,
+          password: hashedPassword,
+          user_type: userType,
+        },
+      });
+      const token = this.generateJWT(newUser.email, newUser.id);
+      return { user: { email }, token };
+    } catch (error) {
+      throw new HttpException(
+        { success: false, message: error.message },
+        error.status,
+      );
     }
-
-    // Hashing the passwords
-    const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log({ hashedPassword });
-
-    const newUser = await this.prismaService.user.create({
-      data: {
-        email,
-        name,
-        phone,
-        password: hashedPassword,
-        user_type: userType,
-      },
-    });
-    const token = this.generateJWT(newUser.email, newUser.id);
-    return { user: { email }, token };
   }
 
   // Signin the user
   async signInUser({ email, password }: SignInParams) {
-    // checking for the existence of the user via the email
-    const user = await this.prismaService.user.findUnique({
-      where: { email },
-    });
-    if (!user) throw new HttpException('Invalid credentials', 400);
+    try {
+      // checking for the existence of the user via the email
+      const user = await this.prismaService.user.findUnique({
+        where: { email },
+      });
+      if (!user) throw new HttpException('Invalid credentials', 400);
 
-    const hashedPwd = user.password;
+      const hashedPwd = user.password;
 
-    // comparing the passwords
-    const isValidPwd = await bcrypt.compare(password, hashedPwd);
+      // comparing the passwords
+      const isValidPwd = await bcrypt.compare(password, hashedPwd);
 
-    if (!isValidPwd) throw new HttpException('Invalid credentials', 400);
+      if (!isValidPwd) throw new HttpException('Invalid credentials', 400);
 
-    const token = this.generateJWT(user.email, user.id);
+      const token = this.generateJWT(user.email, user.id);
 
-    return { user: { userEmail: email }, token };
+      return { user: { userEmail: email }, token };
+    } catch (error) {
+      throw new HttpException(
+        { success: false, message: error.message },
+        error.status,
+      );
+    }
   }
 
+  // Method for generating product key
   generate_product_key(email: string, userType: UserType) {
     const userStringToken = `${email}-${userType}-${process.env.PRODUCT_KEY_SECRET}`;
 
