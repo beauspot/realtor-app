@@ -117,12 +117,12 @@ export class UpdateHomeDTO {
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  numberOfBedrooms?: number;
+  number_of_bedrooms?: number;
 
   @IsOptional()
   @IsNumber()
   @IsPositive()
-  numberOfBathrooms?: number;
+  number_of_bathrooms?: number;
 
   @IsOptional()
   @IsString()
