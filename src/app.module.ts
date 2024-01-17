@@ -10,15 +10,20 @@ import { AuthService } from './user/auth/auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { HomeModule } from './home/home.module';
-
+import { UserInterceptor } from 'src/interceptors/user.interceptors';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
-  imports: [
-    UserModule,
-    PrismaModule,
-    HomeModule,
-  ],
+  imports: [UserModule, PrismaModule, HomeModule],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  providers: [
+    AppService,
+    AuthService,
+    {
+      // impolementing the interceptors
+      provide: APP_INTERCEPTOR,
+      useClass: UserInterceptor,
+    },
+  ],
 })
 export class AppModule {}

@@ -13,7 +13,7 @@ export class AuthService {
   constructor(private readonly prismaService: PrismaService) {}
   // Signup Service for signing up user
   async signup(
-    { email, password, name, phone_no }: SignUpParams,
+    { email, password, name, phone }: SignUpParams,
     userType: UserType,
   ) {
     // checking for the existence of the user via unique email
@@ -34,13 +34,13 @@ export class AuthService {
       data: {
         email,
         name,
-        phone_no,
+        phone,
         password: hashedPassword,
         user_type: userType,
       },
     });
     const token = this.generateJWT(newUser.email, newUser.id);
-    return { user: { email }, tokenData: token };
+    return { user: { email }, token };
   }
 
   // Signin the user
@@ -60,7 +60,7 @@ export class AuthService {
 
     const token = this.generateJWT(user.email, user.id);
 
-    return { user: { userEmail: email }, tokenData: token };
+    return { user: { userEmail: email }, token };
   }
 
   generate_product_key(email: string, userType: UserType) {

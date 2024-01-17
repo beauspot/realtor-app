@@ -5,7 +5,7 @@ export interface SignUpParams {
   email: string;
   password: string;
   name: string;
-  phone_no: string;
+  phone: string;
 }
 
 export interface SignInParams {
