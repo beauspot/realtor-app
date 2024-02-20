@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
-import { PropertyType } from '@prisma/client';
+import { PropertyType } from '.prisma/client';
 
 export interface getHomesParams {
   city?: string;
