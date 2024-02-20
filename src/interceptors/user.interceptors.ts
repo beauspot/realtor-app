@@ -15,13 +15,12 @@ import * as jwt from 'jsonwebtoken';
 export class UserInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, handler: CallHandler) {
     const request = context.switchToHttp().getRequest();
-    // console.log({ request });
-    const token = request?.headers?.authorization?.split('Bearer ')[0];
-    // console.log({ token });
+    // console.log(request);
+    const token = request?.headers?.authorization?.split('Bearer ')[1];
+    // console.log({token});
     const user = jwt.decode(token);
-    // console.log({ user });
     request.user = user;
-
+    // console.log({ user });
     return handler.handle();
   }
 }
