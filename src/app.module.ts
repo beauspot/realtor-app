@@ -2,8 +2,6 @@
 /* eslint-disable prettier/prettier */
 
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthController } from 'src/user/auth/auth.controller';
 import { AuthService } from './user/auth/auth.service';
@@ -16,9 +14,8 @@ import { AuthGuard } from './guards/auth.guards';
 
 @Module({
   imports: [UserModule, PrismaModule, HomeModule],
-  controllers: [AppController, AuthController],
+  controllers: [AuthController],
   providers: [
-    AppService,
     AuthService,
     {
       // impolementing the interceptors
