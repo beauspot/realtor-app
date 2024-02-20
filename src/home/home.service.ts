@@ -4,10 +4,10 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HomeResponseDTO } from 'src/dto/home.dto';
-import { PropertyType } from '@prisma/client';
 import { getHomesParams } from 'src/interface/getHomesParams';
 import { CreateHomeParams } from 'src/interface/createHomeParams';
 import { updateHomeParams } from 'src/interface/updateHome';
+// import { PropertyType } from '.prisma/client';
 
 export const homeSelect = {
   id: true,
