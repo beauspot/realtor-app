@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
-import { PropertyType } from '@prisma/client';
+import { PropertyType } from '.prisma/client';
 import { Expose, Exclude, Type } from 'class-transformer';
 import {
   IsString,
