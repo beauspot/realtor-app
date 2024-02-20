@@ -20,7 +20,7 @@ import {
   CreateHomeDto,
   UpdateHomeDTO,
 } from 'src/dto/home.dto';
-import { PropertyType, UserType } from '@prisma/client';
+import { PropertyType, UserType } from '.prisma/client';
 import { User } from 'src/decorators/user.decorators';
 import { UserInfo } from 'src/interface/userType';
 import { AuthGuard } from 'src/guards/auth.guards';
@@ -57,10 +57,12 @@ export class HomeController {
     return this.homeService.getHomeById(id);
   }
 
-  @Roles(UserType.REALTOR)
+  @UseGuards(AuthGuard)
+  @Roles(UserType.REALTOR, UserType.ADMIN)
   @Post()
   createHome(@Body() body: CreateHomeDto, @User() user: UserInfo) {
     // console.log(user);
+    // console.log('User Role:', user);
     return this.homeService.createHome(body, user.id);
   }
 
