@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
-import { UserType } from '@prisma/client';
+import { UserType } from '.prisma/client';
 import {
   IsString,
   IsNotEmpty,
