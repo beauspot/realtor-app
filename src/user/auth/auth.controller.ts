@@ -4,9 +4,6 @@
 import {
   Controller,
   Post,
-  Put,
-  Get,
-  Delete,
   Body,
   Param,
   ParseEnumPipe,
@@ -14,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDTO, SignInDTO, GenerateProductKeyDTO } from 'src/dto/auth.dto';
-import { UserType } from '@prisma/client';
+import { UserType } from '.prisma/client';
 import * as bcrypt from 'bcryptjs';
 
 @Controller('auth')
