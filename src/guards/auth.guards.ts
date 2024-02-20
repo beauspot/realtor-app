@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 
+// this auth-guard checks the authorization and authentication of a user
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core'; // Allows us to access metadata
 import * as jwt from 'jsonwebtoken';
@@ -25,22 +26,23 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    // console.log(roles);
+    // console.log({ roles });
     if (roles?.length) {
       // 2. Grab the JWT from the request header and verify it
       const request = context.switchToHttp().getRequest();
       const token = request.headers?.authorization?.split('Bearer ')[1];
       try {
-        const payload = (await jwt.verify(
+        const payload = jwt.verify(
           token,
           process.env.JSON_TOKEN_KEY,
-        )) as JWTPayload;
+        ) as JWTPayload;
         // console.log({ payload });
         const user = await this.prismaService.user.findUnique({
           where: {
             id: payload.id,
           },
         });
+        // console.log('User from Database:', user);
         if (!user) return false;
         // console.log({ user });
         if (roles.includes(user.user_type)) return true;
@@ -49,9 +51,6 @@ export class AuthGuard implements CanActivate {
         return false;
       }
     }
-
-    // 3. Determine request to get user by id
-    // 4. Determine if the user has permission
     return true;
   }
 }
