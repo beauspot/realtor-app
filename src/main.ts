@@ -14,6 +14,10 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
     .setDescription('Realtor Application service')
     .setVersion('0.1')
     .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  // http://localhost:3000/realtor-backend-api
+  SwaggerModule.setup('realtor-backend-api', app, document);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -25,7 +29,5 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
     }),
   );
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 })();
