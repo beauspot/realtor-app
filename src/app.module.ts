@@ -23,7 +23,7 @@ import { AuthGuard } from './guards/auth.guards';
       useClass: UserInterceptor,
     },
     {
-      // implementing the guard
+      // implementing the guard for authorization
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
